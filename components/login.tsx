@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -45,16 +46,30 @@ const DESCRIPTION = (
 export default function Login() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    reValidateMode: "onBlur",
   });
 
-  const saveAndVibecode = (fields: z.infer<typeof FormSchema>) => {
-    console.log("LLM API key:", fields[LLM_API_KEY_ID]);
+  const elementRef = useRef<HTMLTextAreaElement>(null);
+  const llmApiKeyRef = useRef("");
+
+  const handleChange =
+    (fieldOnChange: (value: string) => void) =>
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      llmApiKeyRef.current = event.target.value;
+
+      fieldOnChange(getDisplayableKey(event.target.value));
+      form.trigger();
+      elementRef.current?.blur();
+    };
+
+  const saveAndVibecode = () => {
+    console.log("LLM API key:", llmApiKeyRef.current);
 
     toast("You saved the following LLM API key", {
       description: (
         <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
           <code className="text-white">
-            {getDisplayableKey(fields[LLM_API_KEY_ID], true)}
+            {getDisplayableKey(llmApiKeyRef.current, true)}
           </code>
         </pre>
       ),
@@ -79,6 +94,10 @@ export default function Login() {
                   placeholder="sk-XXX"
                   className="resize-none"
                   {...field}
+                  onChange={handleChange(field.onChange)}
+                  onFocus={() => field.onChange("")}
+                  ref={elementRef}
+                  value={field.value}
                 />
               </FormControl>
 

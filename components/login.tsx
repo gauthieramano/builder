@@ -18,6 +18,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { LLM_API_KEY_ID } from "@/lib/constants";
 import { getDisplayableKey } from "@/lib/helpers";
+import type { PropsLlmApiKey } from "./local-storage-llm-api-key";
 
 const FormSchema = z.object({
   [LLM_API_KEY_ID]: z
@@ -43,14 +44,17 @@ const DESCRIPTION = (
   </>
 );
 
-export default function Login() {
+export default function Login({ llmApiKey, setLlmApiKey }: PropsLlmApiKey) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     reValidateMode: "onBlur",
+    values: { [LLM_API_KEY_ID]: getDisplayableKey(llmApiKey) },
   });
 
   const elementRef = useRef<HTMLTextAreaElement>(null);
-  const llmApiKeyRef = useRef("");
+  const llmApiKeyRef = useRef(llmApiKey);
+
+  const hasLlmApiKey = !!llmApiKey;
 
   const handleChange =
     (fieldOnChange: (value: string) => void) =>
@@ -62,8 +66,18 @@ export default function Login() {
       elementRef.current?.blur();
     };
 
+  const reload = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+
+    llmApiKeyRef.current = llmApiKey;
+
+    form.setValue(LLM_API_KEY_ID, getDisplayableKey(llmApiKey), {
+      shouldValidate: true,
+    });
+  };
+
   const saveAndVibecode = () => {
-    console.log("LLM API key:", llmApiKeyRef.current);
+    setLlmApiKey?.(llmApiKeyRef.current);
 
     toast("You saved the following LLM API key", {
       description: (
@@ -108,9 +122,17 @@ export default function Login() {
           )}
         />
 
-        <Button className="select-none" type="submit">
-          Save and vibe code
-        </Button>
+        <div className="flex gap-2">
+          {hasLlmApiKey && (
+            <Button className="select-none" onClick={reload}>
+              Reload
+            </Button>
+          )}
+
+          <Button className="select-none" type="submit">
+            Save and vibe code
+          </Button>
+        </div>
       </form>
     </Form>
   );

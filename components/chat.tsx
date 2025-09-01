@@ -25,7 +25,7 @@ export default function Chat({ llmApiKey }: Props) {
   };
 
   return (
-    <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">
+    <div className="flex h-[calc(100dvh-110px)] min-w-3xs max-w-lg shrink flex-col overflow-scroll rounded-lg border p-6 text-xs sm:h-[calc(100dvh-158px)]">
       {messages.map((message) => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === "user" ? "User: " : "AI: "}
@@ -46,7 +46,7 @@ export default function Chat({ llmApiKey }: Props) {
           value={input}
           placeholder="Say something..."
           onChange={(event) => setInput(event.currentTarget.value)}
-          className="fixed bottom-0 mb-8 w-full max-w-md rounded border border-zinc-300 p-2 shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
+          className="fixed bottom-0 mb-8 w-lg max-w-md rounded border border-zinc-300 bg-white p-2 shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
         />
       </form>
     </div>

@@ -3,16 +3,26 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useState } from "react";
+import { getJsx } from "@/lib/helpers";
 
 type Props = {
   llmApiKey: string;
+  setCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function Chat({ llmApiKey }: Props) {
+export default function Chat({ llmApiKey, setCode }: Props) {
   const [input, setInput] = useState("");
 
   const { messages, sendMessage } = useChat({
     transport: new DefaultChatTransport({ body: { llmApiKey } }),
+
+    onFinish: ({ message }) => {
+      const jsx = getJsx(message);
+
+      if (jsx) {
+        setCode(jsx);
+      }
+    },
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

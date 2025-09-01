@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import type { PropsLlmApiKey } from "@/components/local-storage-llm-api-key";
 import Login from "@/components/login";
 
@@ -13,7 +14,15 @@ const LocalStorageLlmApiKey = dynamic(
 );
 
 export default function Home() {
-  const renderLogin = (props: PropsLlmApiKey) => <Login {...props} />;
+  const router = useRouter();
+
+  const goToVibecoder = () => {
+    router.push("/vibecoder");
+  };
+
+  const renderLogin = (props: PropsLlmApiKey) => (
+    <Login {...props} goToVibecoder={goToVibecoder} />
+  );
 
   return (
     <div className="grid min-h-screen place-content-center p-8 font-sans sm:p-20">

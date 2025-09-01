@@ -44,7 +44,15 @@ const DESCRIPTION = (
   </>
 );
 
-export default function Login({ llmApiKey, setLlmApiKey }: PropsLlmApiKey) {
+export type PropsLogin = PropsLlmApiKey & {
+  goToVibecoder?: () => void;
+};
+
+export default function Login({
+  llmApiKey,
+  setLlmApiKey,
+  goToVibecoder,
+}: PropsLogin) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     reValidateMode: "onBlur",
@@ -88,6 +96,8 @@ export default function Login({ llmApiKey, setLlmApiKey }: PropsLlmApiKey) {
         </pre>
       ),
     });
+
+    goToVibecoder?.();
   };
 
   return (

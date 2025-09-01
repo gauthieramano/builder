@@ -1,0 +1,33 @@
+{
+  "messages": [
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "Hi!"
+        }
+      ],
+      "id": "KtUvSnIBiNbxS9bh",
+      "role": "user"
+    },
+    {
+      "id": "iBJPlOSjUDss6AXN",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "text",
+          "text": "Hello! How can I assist you today?",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_68b51e5e259c81969d5bf5cdb61b7c69016f077bd8e6d72a"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    }
+  ]
+}

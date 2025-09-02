@@ -3,7 +3,11 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useState } from "react";
+import { type ExternalToast, toast } from "sonner";
+import { REGEX } from "@/lib/constants";
 import { getJsx } from "@/lib/helpers";
+
+type ArgsToast = [message: string, options?: ExternalToast];
 
 type Props = {
   llmApiKey: string;
@@ -15,6 +19,15 @@ export default function Chat({ llmApiKey, setCode }: Props) {
 
   const { messages, sendMessage } = useChat({
     transport: new DefaultChatTransport({ body: { llmApiKey } }),
+
+    onError: (error) => {
+      const result = error.message.match(REGEX.SEPARATION);
+      const args: ArgsToast = result
+        ? [result[1], { description: result[2] }]
+        : [error.message];
+
+      toast.error(...args);
+    },
 
     onFinish: ({ message }) => {
       const jsx = getJsx(message);

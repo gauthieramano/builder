@@ -27,8 +27,11 @@ export default function Chat({ llmApiKey }: Props) {
   return (
     <div className="flex h-[calc(100dvh-110px)] min-w-3xs max-w-lg shrink flex-col overflow-scroll rounded-lg border p-6 text-xs sm:h-[calc(100dvh-158px)]">
       {messages.map((message) => (
-        <div key={message.id} className="whitespace-pre-wrap">
-          {message.role === "user" ? "User: " : "AI: "}
+        <div key={message.id} className="whitespace-pre-wrap pb-2">
+          <span className="rounded-md bg-sky-500 px-2 py-1 text-lg text-white">
+            {message.role === "user" ? "User" : "AI"}
+          </span>
+
           {message.parts.map((part, i) => {
             switch (part.type) {
               case "text":

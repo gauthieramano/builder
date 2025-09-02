@@ -30,7 +30,7 @@ export default function RootLayout({ children }: Props) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <Toaster />
+        <Toaster richColors />
       </body>
     </html>
   );

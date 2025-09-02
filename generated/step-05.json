@@ -1,0 +1,284 @@
+{
+  "messages": [
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "create a React application with 3 buttons. Output just the App.jsx file."
+        }
+      ],
+      "id": "9W1yhiQL01Sus3yZ",
+      "role": "user"
+    },
+    {
+      "id": "1EvAkbIYDJ88NQwk",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "reasoning",
+          "text": "",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "rs_68b63594586881968da52be68db9cb23092b9f37bdcab3ba",
+              "reasoningEncryptedContent": null
+            }
+          },
+          "state": "done"
+        },
+        {
+          "type": "text",
+          "text": "import React, { useState } from 'react';\n\nexport default function App() {\n  const [counts, setCounts] = useState({ 1: 0, 2: 0, 3: 0 });\n  const [last, setLast] = useState('');\n\n  const handleClick = (n) => {\n    setCounts(prev => ({\n      ...prev,\n      [n]: (prev[n] ?? 0) + 1\n    }));\n    setLast(`Button ${n} clicked`);\n  };\n\n  return (\n    <div style={{ padding: 20 }}>\n      <div style={{ display: 'flex', gap: '10px', marginBottom: 10 }}>\n        <button onClick={() => handleClick(1)}>Button 1</button>\n        <button onClick={() => handleClick(2)}>Button 2</button>\n        <button onClick={() => handleClick(3)}>Button 3</button>\n      </div>\n\n      <div>Last action: {last || 'None'}</div>\n      <div style={{ marginTop: 8 }}>\n        <strong>Counts:</strong>\n        <div>Button 1: {counts[1]}</div>\n        <div>Button 2: {counts[2]}</div>\n        <div>Button 3: {counts[3]}</div>\n      </div>\n    </div>\n  );\n}",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_68b6359b2ca88196912478410a0d0eaa092b9f37bdcab3ba"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "create a React application with 3 buttons. Use tailwind CSS 3 for styling. Output just the App.jsx file."
+        }
+      ],
+      "id": "bgR2c2a0UDq9Uxb4",
+      "role": "user"
+    },
+    {
+      "id": "ChnIJaMGkKmKqtzg",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "reasoning",
+          "text": "",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "rs_68b6360518f881968e7af803deaaebc8092b9f37bdcab3ba",
+              "reasoningEncryptedContent": null
+            }
+          },
+          "state": "done"
+        },
+        {
+          "type": "text",
+          "text": "import React, { useState } from 'react';\n\nexport default function App() {\n  const [counts, setCounts] = useState({ 1: 0, 2: 0, 3: 0 });\n  const [last, setLast] = useState('');\n\n  const handleClick = (n) => {\n    setCounts(prev => ({\n      ...prev,\n      [n]: (prev[n] ?? 0) + 1\n    }));\n    setLast(`Button ${n} clicked`);\n  };\n\n  return (\n    <div className=\"min-h-screen flex items-center justify-center bg-gray-100\">\n      <div className=\"bg-white p-6 rounded-lg shadow-md w-full max-w-md\">\n        <div className=\"flex gap-3 mb-4\">\n          <button\n            onClick={() => handleClick(1)}\n            className=\"px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300\"\n          >\n            Button 1\n          </button>\n          <button\n            onClick={() => handleClick(2)}\n            className=\"px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300\"\n          >\n            Button 2\n          </button>\n          <button\n            onClick={() => handleClick(3)}\n            className=\"px-4 py-2 bg-indigo-500 text-white font-semibold rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300\"\n          >\n            Button 3\n          </button>\n        </div>\n\n        <div className=\"text-sm text-gray-700 mb-2\">\n          Last action: <span className=\"font-semibold\">{last || 'None'}</span>\n        </div>\n\n        <div className=\"mt-2\">\n          <strong>Counts:</strong>\n          <div className=\"text-sm text-gray-700\">\n            <div>Button 1: {counts[1]}</div>\n            <div>Button 2: {counts[2]}</div>\n            <div>Button 3: {counts[3]}</div>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_68b6360879e88196b59ea673abf58915092b9f37bdcab3ba"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "change the color of the button to red, orange and yellow. Output just the App.jsx file."
+        }
+      ],
+      "id": "vfGzQdmNc6ED3afU",
+      "role": "user"
+    },
+    {
+      "id": "GKrjcb9ZbMQRIBAB",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "reasoning",
+          "text": "",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "rs_68b6369dfcc88196abd46375e4c93d76092b9f37bdcab3ba",
+              "reasoningEncryptedContent": null
+            }
+          },
+          "state": "done"
+        },
+        {
+          "type": "text",
+          "text": "import React, { useState } from 'react';\n\nexport default function App() {\n  const [counts, setCounts] = useState({ 1: 0, 2: 0, 3: 0 });\n  const [last, setLast] = useState('');\n\n  const handleClick = (n) => {\n    setCounts(prev => ({\n      ...prev,\n      [n]: (prev[n] ?? 0) + 1\n    }));\n    setLast(`Button ${n} clicked`);\n  };\n\n  return (\n    <div className=\"min-h-screen flex items-center justify-center bg-gray-100\">\n      <div className=\"bg-white p-6 rounded-lg shadow-md w-full max-w-md\">\n        <div className=\"flex gap-3 mb-4\">\n          <button\n            onClick={() => handleClick(1)}\n            className=\"px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300\"\n          >\n            Button 1\n          </button>\n          <button\n            onClick={() => handleClick(2)}\n            className=\"px-4 py-2 bg-orange-500 text-white font-semibold rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300\"\n          >\n            Button 2\n          </button>\n          <button\n            onClick={() => handleClick(3)}\n            className=\"px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300\"\n          >\n            Button 3\n          </button>\n        </div>\n\n        <div className=\"text-sm text-gray-700 mb-2\">\n          Last action: <span className=\"font-semibold\">{last || 'None'}</span>\n        </div>\n\n        <div className=\"mt-2\">\n          <strong>Counts:</strong>\n          <div className=\"text-sm text-gray-700\">\n            <div>Button 1: {counts[1]}</div>\n            <div>Button 2: {counts[2]}</div>\n            <div>Button 3: {counts[3]}</div>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_68b636a3181c8196a72a4a72ff5db380092b9f37bdcab3ba"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "add one different icon in each button. Just output App.jsx file"
+        }
+      ],
+      "id": "IVXw6O4xaJJfmq9h",
+      "role": "user"
+    },
+    {
+      "id": "vfR2e0W27e6F0UOW",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "reasoning",
+          "text": "",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "rs_68b636ecd9d48196b65ac067f46d1382092b9f37bdcab3ba",
+              "reasoningEncryptedContent": null
+            }
+          },
+          "state": "done"
+        },
+        {
+          "type": "text",
+          "text": "import React, { useState } from 'react';\n\nexport default function App() {\n  const [counts, setCounts] = useState({ 1: 0, 2: 0, 3: 0 });\n  const [last, setLast] = useState('');\n\n  const handleClick = (n) => {\n    setCounts(prev => ({\n      ...prev,\n      [n]: (prev[n] ?? 0) + 1\n    }));\n    setLast(`Button ${n} clicked`);\n  };\n\n  return (\n    <div className=\"min-h-screen flex items-center justify-center bg-gray-100\">\n      <div className=\"bg-white p-6 rounded-lg shadow-md w-full max-w-md\">\n        <div className=\"flex gap-3 mb-4\">\n          <button\n            onClick={() => handleClick(1)}\n            className=\"flex items-center px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 \n                       4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 \n                       3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 \n                       8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\" />\n            </svg>\n            Button 1\n          </button>\n\n          <button\n            onClick={() => handleClick(2)}\n            className=\"flex items-center px-4 py-2 bg-orange-500 text-white font-semibold rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"2\" strokeLinecap=\"round\" strokeLinejoin=\"round\" aria-hidden=\"true\">\n              <path d=\"M13 3L4 14h6l-1 7 9-11h-6l1-7z\" />\n            </svg>\n            Button 2\n          </button>\n\n          <button\n            onClick={() => handleClick(3)}\n            className=\"flex items-center px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M12 17.3l6.18 3.73-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z\" />\n            </svg>\n            Button 3\n          </button>\n        </div>\n\n        <div className=\"text-sm text-gray-700 mb-2\">\n          Last action: <span className=\"font-semibold\">{last || 'None'}</span>\n        </div>\n\n        <div className=\"mt-2\">\n          <strong>Counts:</strong>\n          <div className=\"text-sm text-gray-700\">\n            <div>Button 1: {counts[1]}</div>\n            <div>Button 2: {counts[2]}</div>\n            <div>Button 3: {counts[3]}</div>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_68b636fcbc0c819694be4483a9812d2f092b9f37bdcab3ba"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "add a text about Music using `react-markdown`. Output just App.jsx file"
+        }
+      ],
+      "id": "CHiEkU041xxLURZk",
+      "role": "user"
+    },
+    {
+      "id": "bWDxVjK83z1hiTZp",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "reasoning",
+          "text": "",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "rs_68b6380ae6888196a2e258f7eba80927092b9f37bdcab3ba",
+              "reasoningEncryptedContent": null
+            }
+          },
+          "state": "done"
+        },
+        {
+          "type": "text",
+          "text": "import React, { useState } from 'react';\nimport ReactMarkdown from 'react-markdown';\n\nexport default function App() {\n  const [counts, setCounts] = useState({ 1: 0, 2: 0, 3: 0 });\n  const [last, setLast] = useState('');\n\n  const markdown = `\n# Music\n\nMusic is the art of arranging sounds in time to produce a composition that expresses ideas and emotions. It transcends language and can bring people together.\n\n- It spans many genres from classical to contemporary\n- It can be enjoyed alone or with others\n- It fuels memories and inspires movement\n`;\n\n  const handleClick = (n) => {\n    setCounts(prev => ({\n      ...prev,\n      [n]: (prev[n] ?? 0) + 1\n    }));\n    setLast(`Button ${n} clicked`);\n  };\n\n  return (\n    <div className=\"min-h-screen flex items-center justify-center bg-gray-100\">\n      <div className=\"bg-white p-6 rounded-lg shadow-md w-full max-w-md\">\n        <div className=\"flex gap-3 mb-4\">\n          <button\n            onClick={() => handleClick(1)}\n            className=\"flex items-center px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 \n                       4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 \n                       3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 \n                       8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\" />\n            </svg>\n            Button 1\n          </button>\n\n          <button\n            onClick={() => handleClick(2)}\n            className=\"flex items-center px-4 py-2 bg-orange-500 text-white font-semibold rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"2\" strokeLinecap=\"round\" strokeLinejoin=\"round\" aria-hidden=\"true\">\n              <path d=\"M13 3L4 14h6l-1 7 9-11h-6l1-7z\" />\n            </svg>\n            Button 2\n          </button>\n\n          <button\n            onClick={() => handleClick(3)}\n            className=\"flex items-center px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M12 17.3l6.18 3.73-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z\" />\n            </svg>\n            Button 3\n          </button>\n        </div>\n\n        <div className=\"text-sm text-gray-700 mb-2\">\n          Last action: <span className=\"font-semibold\">{last || 'None'}</span>\n        </div>\n\n        <div className=\"mt-2\">\n          <strong>Counts:</strong>\n          <div className=\"text-sm text-gray-700\">\n            <div>Button 1: {counts[1]}</div>\n            <div>Button 2: {counts[2]}</div>\n            <div>Button 3: {counts[3]}</div>\n          </div>\n        </div>\n\n        <div className=\"mt-6\">\n          <div className=\"text-sm mb-2 text-gray-700\">Music</div>\n          <div className=\"border rounded p-3 bg-gray-50\">\n            <ReactMarkdown>{markdown}</ReactMarkdown>\n          </div>\n        </div>\n\n      </div>\n    </div>\n  );\n}",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_68b6381592c48196bfffd06fda255ade092b9f37bdcab3ba"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "add a nice photo with Daft Punk bellow the text about music. Output just the App.jsx file."
+        }
+      ],
+      "id": "VPbp6MSWZFjAHKaf",
+      "role": "user"
+    },
+    {
+      "id": "fRIGSvcx225qLWvk",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "reasoning",
+          "text": "",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "rs_68b6391c59908196925595f6bff973ea092b9f37bdcab3ba",
+              "reasoningEncryptedContent": null
+            }
+          },
+          "state": "done"
+        },
+        {
+          "type": "text",
+          "text": "import React, { useState } from 'react';\nimport ReactMarkdown from 'react-markdown';\n\nexport default function App() {\n  const [counts, setCounts] = useState({ 1: 0, 2: 0, 3: 0 });\n  const [last, setLast] = useState('');\n\n  const markdown = `\n# Music\n\nMusic is the art of arranging sounds in time to produce a composition that expresses ideas and emotions. It transcends language and can bring people together.\n\n- It spans many genres from classical to contemporary\n- It can be enjoyed alone or with others\n- It fuels memories and inspires movement\n`;\n\n  // Daft Punk photo (licensed image from Wikimedia Commons)\n  const daftImg =\n    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Daft_Punk_Paris_2010.jpg/640px-Daft_Punk_Paris_2010.jpg';\n\n  const handleClick = (n) => {\n    setCounts(prev => ({\n      ...prev,\n      [n]: (prev[n] ?? 0) + 1\n    }));\n    setLast(`Button ${n} clicked`);\n  };\n\n  return (\n    <div className=\"min-h-screen flex items-center justify-center bg-gray-100\">\n      <div className=\"bg-white p-6 rounded-lg shadow-md w-full max-w-md\">\n        <div className=\"flex gap-3 mb-4\">\n          <button\n            onClick={() => handleClick(1)}\n            className=\"flex items-center px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 \n                       4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 \n                       3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 \n                       8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\" />\n            </svg>\n            Button 1\n          </button>\n\n          <button\n            onClick={() => handleClick(2)}\n            className=\"flex items-center px-4 py-2 bg-orange-500 text-white font-semibold rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"2\" strokeLinecap=\"round\" strokeLinejoin=\"round\" aria-hidden=\"true\">\n              <path d=\"M13 3L4 14h6l-1 7 9-11h-6l1-7z\" />\n            </svg>\n            Button 2\n          </button>\n\n          <button\n            onClick={() => handleClick(3)}\n            className=\"flex items-center px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M12 17.3l6.18 3.73-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z\" />\n            </svg>\n            Button 3\n          </button>\n        </div>\n\n        <div className=\"text-sm text-gray-700 mb-2\">\n          Last action: <span className=\"font-semibold\">{last || 'None'}</span>\n        </div>\n\n        <div className=\"mt-2\">\n          <strong>Counts:</strong>\n          <div className=\"text-sm text-gray-700\">\n            <div>Button 1: {counts[1]}</div>\n            <div>Button 2: {counts[2]}</div>\n            <div>Button 3: {counts[3]}</div>\n          </div>\n        </div>\n\n        <div className=\"mt-6\">\n          <div className=\"text-sm mb-2 text-gray-700\">Music</div>\n          <div className=\"border rounded p-3 bg-gray-50\">\n            <ReactMarkdown>{markdown}</ReactMarkdown>\n          </div>\n        </div>\n\n        <div className=\"mt-6\">\n          <img\n            src={daftImg}\n            alt=\"Daft Punk photo\"\n            className=\"w-full rounded-md shadow-md object-cover\"\n          />\n        </div>\n      </div>\n    </div>\n  );\n}",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_68b63930432081969be93ca72719be70092b9f37bdcab3ba"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "use an image with a proper URL instead of the previous one. Output just the App.jsx file"
+        }
+      ],
+      "id": "o5q8lUeD6WlTNP36",
+      "role": "user"
+    },
+    {
+      "id": "aO5Se4btzx12hFIc",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "reasoning",
+          "text": "",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "rs_68b639ad9cd0819695ceac0858b895f3092b9f37bdcab3ba",
+              "reasoningEncryptedContent": null
+            }
+          },
+          "state": "done"
+        },
+        {
+          "type": "text",
+          "text": "import React, { useState } from 'react';\nimport ReactMarkdown from 'react-markdown';\n\nexport default function App() {\n  const [counts, setCounts] = useState({ 1: 0, 2: 0, 3: 0 });\n  const [last, setLast] = useState('');\n\n  const markdown = `\n# Music\n\nMusic is the art of arranging sounds in time to produce a composition that expresses ideas and emotions. It transcends language and can bring people together.\n\n- It spans many genres from classical to contemporary\n- It can be enjoyed alone or with others\n- It fuels memories and inspires movement\n`;\n\n  // Proper image URL\n  const daftImg = 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=60';\n\n  const handleClick = (n) => {\n    setCounts(prev => ({\n      ...prev,\n      [n]: (prev[n] ?? 0) + 1\n    }));\n    setLast(`Button ${n} clicked`);\n  };\n\n  return (\n    <div className=\"min-h-screen flex items-center justify-center bg-gray-100\">\n      <div className=\"bg-white p-6 rounded-lg shadow-md w-full max-w-md\">\n        <div className=\"flex gap-3 mb-4\">\n          <button\n            onClick={() => handleClick(1)}\n            className=\"flex items-center px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 \n                       4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 \n                       3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 \n                       8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\" />\n            </svg>\n            Button 1\n          </button>\n\n          <button\n            onClick={() => handleClick(2)}\n            className=\"flex items-center px-4 py-2 bg-orange-500 text-white font-semibold rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"2\" strokeLinecap=\"round\" strokeLinejoin=\"round\" aria-hidden=\"true\">\n              <path d=\"M13 3L4 14h6l-1 7 9-11h-6l1-7z\" />\n            </svg>\n            Button 2\n          </button>\n\n          <button\n            onClick={() => handleClick(3)}\n            className=\"flex items-center px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300\"\n          >\n            <svg className=\"w-4 h-4 mr-2\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M12 17.3l6.18 3.73-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z\" />\n            </svg>\n            Button 3\n          </button>\n        </div>\n\n        <div className=\"text-sm text-gray-700 mb-2\">\n          Last action: <span className=\"font-semibold\">{last || 'None'}</span>\n        </div>\n\n        <div className=\"mt-2\">\n          <strong>Counts:</strong>\n          <div className=\"text-sm text-gray-700\">\n            <div>Button 1: {counts[1]}</div>\n            <div>Button 2: {counts[2]}</div>\n            <div>Button 3: {counts[3]}</div>\n          </div>\n        </div>\n\n        <div className=\"mt-6\">\n          <div className=\"text-sm mb-2 text-gray-700\">Music</div>\n          <div className=\"border rounded p-3 bg-gray-50\">\n            <ReactMarkdown>{markdown}</ReactMarkdown>\n          </div>\n        </div>\n\n        <div className=\"mt-6\">\n          <img\n            src={daftImg}\n            alt=\"Music photo\"\n            className=\"w-full rounded-md shadow-md object-cover\"\n          />\n        </div>\n      </div>\n    </div>\n  );\n}",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_68b639b506388196b1ae9d7b914e499e092b9f37bdcab3ba"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    }
+  ]
+}

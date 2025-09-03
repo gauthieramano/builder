@@ -9,5 +9,5 @@ export default function Vibecoder({ llmApiKey }: PropsLlmApiKey) {
     redirect("/");
   }
 
-  return <Chat />;
+  return <Chat llmApiKey={llmApiKey} />;
 }

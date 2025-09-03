@@ -1,11 +1,19 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { useState } from "react";
 
-export default function Chat() {
+type Props = {
+  llmApiKey: string;
+};
+
+export default function Chat({ llmApiKey }: Props) {
   const [input, setInput] = useState("");
-  const { messages, sendMessage } = useChat();
+
+  const { messages, sendMessage } = useChat({
+    transport: new DefaultChatTransport({ body: { llmApiKey } }),
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

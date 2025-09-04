@@ -2,7 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { Redo2, Undo2 } from "lucide-react";
+import { PanelRight, Redo2, Undo2 } from "lucide-react";
 import { useState } from "react";
 import { type ExternalToast, toast } from "sonner";
 import { Response } from "@/components/ai-elements/response";
@@ -32,6 +32,7 @@ type Props = {
 
 export default function Chat({ llmApiKey, setCode }: Props) {
   const [input, setInput] = useState("");
+  const [isLarge, setIsLarge] = useState(false);
   const { jsxs, steps, stepIndex, stashedMessages } = useInitChatRefs();
 
   const { messages, sendMessage, setMessages, status } = useChat({
@@ -86,7 +87,9 @@ export default function Chat({ llmApiKey, setCode }: Props) {
 
   return (
     <div className="relative">
-      <div className="flex h-[calc(100dvh-158px)] min-w-50 max-w-3xs shrink flex-col rounded-lg border p-2 text-xs md:max-w-2xs lg:max-w-sm xl:max-w-md">
+      <div
+        className={`flex h-[calc(100dvh-158px)] shrink flex-col rounded-lg border p-2 text-xs ${isLarge ? "min-w-lg max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-2xl" : "min-w-50 max-w-3xs md:max-w-2xs lg:max-w-sm xl:max-w-md"}`}
+      >
         <Conversation>
           <ConversationContent>
             {messages.map((message) => (
@@ -159,6 +162,15 @@ export default function Chat({ llmApiKey, setCode }: Props) {
           <Redo2 />
         </Button>
       </div>
+
+      <Button
+        onClick={() => setIsLarge(!isLarge)}
+        size="icon"
+        variant="ghost"
+        className="absolute top-2 right-2 size-8"
+      >
+        <PanelRight />
+      </Button>
     </div>
   );
 }

@@ -17,7 +17,7 @@ export default function VidecoderPage() {
   const renderVibecoder = (props: PropsLlmApiKey) => <Vibecoder {...props} />;
 
   return (
-    <div className="grid min-h-screen p-8 font-sans sm:p-20">
+    <div className="grid min-h-screen px-4 pt-12 font-sans md:px-12">
       <div>
         <LocalStorageLlmApiKey render={renderVibecoder} />
       </div>

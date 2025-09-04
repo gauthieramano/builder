@@ -4,8 +4,21 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useState } from "react";
 import { type ExternalToast, toast } from "sonner";
+import { Response } from "@/components/ai-elements/response";
 import { REGEX } from "@/lib/constants";
 import { getJsx } from "@/lib/helpers";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "./ai-elements/conversation";
+import { Loader } from "./ai-elements/loader";
+import { Message, MessageContent } from "./ai-elements/message";
+import {
+  PromptInput,
+  PromptInputSubmit,
+  PromptInputTextarea,
+} from "./ai-elements/prompt-input";
 
 type ArgsToast = [message: string, options?: ExternalToast];
 
@@ -17,7 +30,7 @@ type Props = {
 export default function Chat({ llmApiKey, setCode }: Props) {
   const [input, setInput] = useState("");
 
-  const { messages, sendMessage } = useChat({
+  const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({ body: { llmApiKey } }),
 
     onError: (error) => {
@@ -47,34 +60,61 @@ export default function Chat({ llmApiKey, setCode }: Props) {
     }
   };
 
+  const hasLoader = ["submitted", "streaming"].includes(status);
+
   return (
-    <div className="flex h-[calc(100dvh-110px)] min-w-3xs max-w-lg shrink flex-col overflow-scroll rounded-lg border p-6 text-xs sm:h-[calc(100dvh-158px)]">
-      {messages.map((message) => (
-        <div key={message.id} className="whitespace-pre-wrap pb-2">
-          <span className="rounded-md bg-sky-500 px-2 py-1 text-lg text-white">
-            {message.role === "user" ? "User" : "AI"}
-          </span>
+    <div className="relative">
+      <div className="flex h-[calc(100dvh-158px)] min-w-50 max-w-lg shrink flex-col rounded-lg border p-2 text-xs">
+        <Conversation>
+          <ConversationContent>
+            {messages.map((message) => (
+              <Message from={message.role} key={message.id}>
+                <MessageContent>
+                  {message.parts.map((part, i) => {
+                    switch (part.type) {
+                      case "text":
+                        return (
+                          <Response key={`${message.id}-${i}`}>
+                            {part.text}
+                          </Response>
+                        );
 
-          {message.parts.map((part, i) => {
-            switch (part.type) {
-              case "text":
-                return <div key={`${message.id}-${i}`}>{part.text}</div>;
+                      default:
+                        return null;
+                    }
+                  })}
+                </MessageContent>
+              </Message>
+            ))}
 
-              default:
-                return null;
-            }
-          })}
-        </div>
-      ))}
+            {hasLoader && (
+              <div className="flex justify-center">
+                <Loader />
+              </div>
+            )}
+          </ConversationContent>
+          <ConversationScrollButton />
+        </Conversation>
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          value={input}
-          placeholder="Say something..."
-          onChange={(event) => setInput(event.currentTarget.value)}
-          className="fixed bottom-0 mb-8 w-lg max-w-md rounded border border-zinc-300 bg-white p-2 shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
-        />
-      </form>
+      <div className="-bottom-18 absolute">
+        <PromptInput
+          onSubmit={handleSubmit}
+          className="relative mx-auto mt-4 w-[calc(100dvw-500px)] min-w-md max-w-2xl"
+        >
+          <PromptInputTextarea
+            value={input}
+            placeholder="Say what you want to build..."
+            onChange={(event) => setInput(event.currentTarget.value)}
+            className="pr-12"
+          />
+          <PromptInputSubmit
+            status={status === "streaming" ? "streaming" : "ready"}
+            disabled={!input.trim()}
+            className="absolute right-1 bottom-1"
+          />
+        </PromptInput>
+      </div>
     </div>
   );
 }

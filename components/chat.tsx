@@ -2,6 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import { Redo2, Undo2 } from "lucide-react";
 import { useState } from "react";
 import { type ExternalToast, toast } from "sonner";
 import { Response } from "@/components/ai-elements/response";
@@ -19,6 +20,8 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
 } from "./ai-elements/prompt-input";
+import useChatRefs, { useInitChatRefs } from "./hooks/useChatRefs";
+import { Button } from "./ui/button";
 
 type ArgsToast = [message: string, options?: ExternalToast];
 
@@ -29,9 +32,12 @@ type Props = {
 
 export default function Chat({ llmApiKey, setCode }: Props) {
   const [input, setInput] = useState("");
+  const { jsxs, steps, stepIndex, stashedMessages } = useInitChatRefs();
 
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, setMessages, status } = useChat({
     transport: new DefaultChatTransport({ body: { llmApiKey } }),
+
+    experimental_throttle: 1000,
 
     onError: (error) => {
       const result = error.message.match(REGEX.SEPARATION);
@@ -47,20 +53,36 @@ export default function Chat({ llmApiKey, setCode }: Props) {
 
       if (jsx) {
         setCode(jsx);
+        jsxs.current.push(jsx);
+        steps.current.push(0);
+        stepIndex.current++;
+      } else {
+        // No new preview to display, but inappropriate messages to reference
+        steps.current[steps.current.length - 1]++;
       }
     },
+  });
+
+  const { cleanRefs, undo, redo, hasLoader, canUndo, canRedo } = useChatRefs({
+    messages,
+    jsxs,
+    steps,
+    stepIndex,
+    stashedMessages,
+    status,
+    setMessages,
+    setCode,
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (input.trim()) {
+      cleanRefs();
       sendMessage({ text: input });
       setInput("");
     }
   };
-
-  const hasLoader = ["submitted", "streaming"].includes(status);
 
   return (
     <div className="relative">
@@ -114,6 +136,28 @@ export default function Chat({ llmApiKey, setCode }: Props) {
             className="absolute right-1 bottom-1"
           />
         </PromptInput>
+      </div>
+
+      <div className="absolute right-2 bottom-2 flex gap-2">
+        <Button
+          onClick={undo}
+          size="icon"
+          disabled={!canUndo}
+          variant="secondary"
+          className="size-8"
+        >
+          <Undo2 />
+        </Button>
+
+        <Button
+          onClick={redo}
+          size="icon"
+          disabled={!canRedo}
+          variant="secondary"
+          className="size-8"
+        >
+          <Redo2 />
+        </Button>
       </div>
     </div>
   );

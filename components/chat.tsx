@@ -6,7 +6,7 @@ import { useState } from "react";
 import { type ExternalToast, toast } from "sonner";
 import { Response } from "@/components/ai-elements/response";
 import { REGEX } from "@/lib/constants";
-import { getJsx } from "@/lib/helpers";
+import { getJsx, getProperText } from "@/lib/helpers";
 import {
   Conversation,
   ConversationContent,
@@ -75,7 +75,7 @@ export default function Chat({ llmApiKey, setCode }: Props) {
                       case "text":
                         return (
                           <Response key={`${message.id}-${i}`}>
-                            {part.text}
+                            {getProperText(part.text)}
                           </Response>
                         );
 

@@ -64,7 +64,7 @@ export default function Chat({ llmApiKey, setCode }: Props) {
 
   return (
     <div className="relative">
-      <div className="flex h-[calc(100dvh-158px)] min-w-50 max-w-lg shrink flex-col rounded-lg border p-2 text-xs">
+      <div className="flex h-[calc(100dvh-158px)] min-w-50 max-w-3xs shrink flex-col rounded-lg border p-2 text-xs md:max-w-2xs lg:max-w-sm xl:max-w-md">
         <Conversation>
           <ConversationContent>
             {messages.map((message) => (

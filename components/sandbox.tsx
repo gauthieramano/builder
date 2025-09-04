@@ -48,7 +48,7 @@ export default function Sandbox({ code }: Props) {
   const toggle = () => setNoButtons(noButtons ? "" : NO_BUTTONS);
 
   return (
-    <main className={`${noButtons} relative min-w-lg grow`}>
+    <main className={`${noButtons} relative min-w-md grow`}>
       <div className="overflow-hidden rounded-lg border">
         <SandpackProvider
           template="react"
@@ -65,7 +65,7 @@ export default function Sandbox({ code }: Props) {
           }}
         >
           <SandpackLayout className="border-0!">
-            <SandpackPreview className="h-[calc(100dvh-112px)]! sm:h-[calc(100dvh-160px)]!" />
+            <SandpackPreview className="h-[calc(100dvh-160px)]!" />
           </SandpackLayout>
         </SandpackProvider>
       </div>

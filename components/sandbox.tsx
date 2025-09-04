@@ -5,6 +5,8 @@ import {
   SandpackPreview,
   SandpackProvider,
 } from "@codesandbox/sandpack-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 const DEFAULT_CODE = `import React from "react";
 import { Edit } from "lucide-react";
@@ -36,11 +38,17 @@ const HTML = `<!DOCTYPE html>
 </html>
 `;
 
+const NO_BUTTONS = "no-preview-buttons";
+
 type Props = { code?: string };
 
 export default function Sandbox({ code }: Props) {
+  const [noButtons, setNoButtons] = useState(NO_BUTTONS);
+
+  const toggle = () => setNoButtons(noButtons ? "" : NO_BUTTONS);
+
   return (
-    <main className="min-w-lg grow">
+    <main className={`${noButtons} relative min-w-lg grow`}>
       <div className="overflow-hidden rounded-lg border">
         <SandpackProvider
           template="react"
@@ -61,6 +69,10 @@ export default function Sandbox({ code }: Props) {
           </SandpackLayout>
         </SandpackProvider>
       </div>
+
+      <Button onClick={toggle} className="absolute right-0 mt-5 select-none">
+        DevTools
+      </Button>
     </main>
   );
 }

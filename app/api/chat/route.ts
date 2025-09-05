@@ -1,5 +1,6 @@
 import { createOpenAI } from "@ai-sdk/openai";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import { type NextRequest, NextResponse } from "next/server";
 
 // Allow streaming responses up to 2 minutes
 export const maxDuration = 120;
@@ -107,4 +108,8 @@ export async function POST(req: Request) {
   });
 
   return result.toUIMessageStreamResponse();
+}
+
+export function GET(request: NextRequest) {
+  return NextResponse.redirect(new URL("/", request.url));
 }

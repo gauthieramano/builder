@@ -42,6 +42,41 @@
           }
         }
       },
+      "style": {
+        "noExportedImports": "error",
+        "noInferrableTypes": "error",
+        "noMagicNumbers": "error",
+        "noNegationElse": "error",
+        "noParameterAssign": {
+          "level": "error",
+          "options": { "propertyAssignment": "deny" }
+        },
+        "noSubstr": "error",
+        "noUnusedTemplateLiteral": "warn",
+        "noUselessElse": "warn",
+        "noYodaExpression": "warn",
+        "useArrayLiterals": "warn",
+        "useBlockStatements": { "level": "warn", "fix": "safe", "options": {} },
+        "useCollapsedElseIf": "warn",
+        "useCollapsedIf": "warn",
+        "useConsistentCurlyBraces": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {}
+        },
+        "useConsistentObjectDefinitions": "warn",
+        "useNamingConvention": {
+          "level": "warn",
+          "fix": "none",
+          "options": {}
+        },
+        "useShorthandAssign": { "level": "warn", "fix": "safe", "options": {} },
+        "useSingleVarDeclarator": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {}
+        }
+      },
       "suspicious": {
         "noUnknownAtRules": "off"
       }

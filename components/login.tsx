@@ -20,13 +20,16 @@ import { LLM_API_KEY_ID } from "@/lib/constants";
 import { getDisplayableKey } from "@/lib/helpers";
 import type { PropsLlmApiKey } from "./local-storage-llm-api-key";
 
+const MIN_LENGTH = 10;
+const MAX_LENGTH = 256;
+
 const FormSchema = z.object({
   [LLM_API_KEY_ID]: z
     .string()
-    .min(10, {
+    .min(MIN_LENGTH, {
       message: "The API key must be at least 10 characters.",
     })
-    .max(256, {
+    .max(MAX_LENGTH, {
       message: "The API key must not be longer than 256 characters.",
     }),
 });

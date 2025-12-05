@@ -38,10 +38,11 @@ export default function Chat({ llmApiKey, setCode }: Props) {
   const { messages, sendMessage, setMessages, status } = useChat({
     transport: new DefaultChatTransport({ body: { llmApiKey } }),
 
+    // biome-ignore lint/style/useNamingConvention: This object property name should be in camelCase
     experimental_throttle: 1000,
 
     onError: (error) => {
-      const result = error.message.match(REGEX.SEPARATION);
+      const result = error.message.match(REGEX.separation);
       const args: ArgsToast = result
         ? [result[1], { description: result[2] }]
         : [error.message];

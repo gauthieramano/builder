@@ -12,7 +12,7 @@ https://www.loom.com/share/f8386c5e81bf48b4aba86d245a3db7f0
 
 ## Quick start
 
-First, you have to install the project with `Node.js 18.18` or later:
+First, you have to install the project with `Node.js 20.9` or later _(the `v24.11 (LTS)` is recommanded)_:
 
 ```sh
 npm i
@@ -106,7 +106,7 @@ It uses:
 
 - [TypeScript](https://www.typescriptlang.org) _(v5)_
 - [React](https://react.dev) _(v19)_
-- [Next.js](https://nextjs.org) _(v15.5)_
+- [Next.js](https://nextjs.org) _(v16)_
 - [Vercel AI SDK](https://ai-sdk.dev) _(v5)_ with [@ai-sdk/openai](https://www.npmjs.com/package/@ai-sdk/openai)
 - [Tailwind CSS](https://tailwindcss.com) _(v4)_
 - [shadcn/ui](https://ui.shadcn.com)

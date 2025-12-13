@@ -17,6 +17,7 @@ import { Loader } from "./ai-elements/loader";
 import { Message, MessageContent } from "./ai-elements/message";
 import {
   PromptInput,
+  type PromptInputMessage,
   PromptInputSubmit,
   PromptInputTextarea,
 } from "./ai-elements/prompt-input";
@@ -76,12 +77,10 @@ export default function Chat({ llmApiKey, setCode }: Props) {
     setCode,
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (input.trim()) {
+  const handleSubmit = ({ text }: PromptInputMessage) => {
+    if (text.trim()) {
       cleanRefs();
-      sendMessage({ text: input });
+      sendMessage({ text });
       setInput("");
     }
   };
@@ -131,11 +130,11 @@ export default function Chat({ llmApiKey, setCode }: Props) {
           <PromptInputTextarea
             value={input}
             placeholder="Say what you want to build..."
-            onChange={(event) => setInput(event.currentTarget.value)}
+            onChange={(event) => setInput(event.target.value)}
             className="pr-12"
           />
           <PromptInputSubmit
-            status={status === "streaming" ? "streaming" : "ready"}
+            status={status}
             disabled={!input.trim()}
             className="absolute right-1 bottom-1"
           />

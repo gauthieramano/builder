@@ -1,0 +1,363 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Booking Calendar – No Build</title>
+    <!-- Tailwind CDN (for demos only) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React 18 UMD (global React/ReactDOM) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel Standalone to transpile JSX in the browser (for demos only) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      /* Utility to mimic .size-4/.size-5 used in the TSX */
+      .size-4 { width: 1rem; height: 1rem; }
+      .size-5 { width: 1.25rem; height: 1.25rem; }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gradient-to-b from-slate-50 to-white text-slate-900">
+    <div id="root"></div>
+
+    <script type="text/babel" data-presets="env,react">
+      const { useMemo, useState } = React;
+
+      // ---------------------------------------------
+      // Utilities
+      // ---------------------------------------------
+      const pad = (n) => (n < 10 ? `0${n}` : `${n}`);
+      const fmtDateKey = (d) => {
+        const y = d.getFullYear();
+        const m = pad(d.getMonth() + 1);
+        const day = pad(d.getDate());
+        return `${y}-${m}-${day}`;
+      };
+      function parseTimeToMinutes(t) {
+        const [h, m] = t.split(":").map(Number);
+        return h * 60 + m;
+      }
+      function minutesToHHmm(mins) {
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        return `${pad(h)}:${pad(m)}`;
+      }
+      function overlaps(aStart, aEnd, bStart, bEnd) {
+        const aS = parseTimeToMinutes(aStart);
+        const aE = parseTimeToMinutes(aEnd);
+        const bS = parseTimeToMinutes(bStart);
+        const bE = parseTimeToMinutes(bEnd);
+        return Math.max(aS, bS) < Math.min(aE, bE);
+      }
+      function getMonthMatrix(view) {
+        const first = new Date(view.getFullYear(), view.getMonth(), 1);
+        const start = new Date(first);
+        const weekday = (first.getDay() + 6) % 7; // Monday start
+        start.setDate(first.getDate() - weekday);
+        const weeks = [];
+        let cur = new Date(start);
+        for (let w = 0; w < 6; w++) {
+          const row = [];
+          for (let d = 0; d < 7; d++) {
+            row.push(new Date(cur));
+            cur.setDate(cur.getDate() + 1);
+          }
+          weeks.push(row);
+        }
+        return weeks;
+      }
+
+      // ---------------------------------------------
+      // Demo Data
+      // ---------------------------------------------
+      const demoBookings = [
+        { id: "b1", date: "2025-08-28", start: "10:00", end: "10:30", name: "Jamie" },
+        { id: "b2", date: "2025-08-28", start: "13:00", end: "14:00", name: "Alex" },
+        { id: "b3", date: "2025-08-29", start: "09:30", end: "10:00", name: "Sam" },
+      ];
+
+      // ---------------------------------------------
+      // Tiny inline icons (SVG)
+      // ---------------------------------------------
+      const IconChevronLeft = (props) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5" {...props}>
+          <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      );
+      const IconChevronRight = (props) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5" {...props}>
+          <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      );
+      const IconClock = (props) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-4" {...props}>
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 3" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      );
+      const IconCheck = (props) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-4" {...props}>
+          <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      );
+      const IconX = (props) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-4" {...props}>
+          <path d="M6 6l12 12M6 18L18 6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      );
+
+      // ---------------------------------------------
+      // Main Component (no TypeScript)
+      // ---------------------------------------------
+      function BookingCalendarPage() {
+        const [view, setView] = useState(() => new Date());
+        const [selectedDate, setSelectedDate] = useState(() => fmtDateKey(new Date()));
+        const [slotMinutes, setSlotMinutes] = useState(30);
+        const [durationMinutes, setDurationMinutes] = useState(30);
+        const [hours, setHours] = useState({ start: "09:00", end: "18:00" });
+        const [bookings, setBookings] = useState(demoBookings);
+        const [name, setName] = useState("");
+        const [note, setNote] = useState("");
+        const [selectedSlot, setSelectedSlot] = useState(null);
+        const [saving, setSaving] = useState(false);
+
+        const monthWeeks = useMemo(() => getMonthMatrix(view), [view]);
+        const dayBookings = useMemo(() => bookings.filter(b => b.date === selectedDate), [bookings, selectedDate]);
+
+        const slots = useMemo(() => {
+          const res = [];
+          const startM = parseTimeToMinutes(hours.start);
+          const endM = parseTimeToMinutes(hours.end);
+          for (let m = startM; m + durationMinutes <= endM; m += slotMinutes) {
+            const slotStart = minutesToHHmm(m);
+            const slotEnd = minutesToHHmm(m + durationMinutes);
+            const conflicts = dayBookings.filter(b => overlaps(slotStart, slotEnd, b.start, b.end)).map(b => b.id);
+            res.push({ start: slotStart, end: slotEnd, available: conflicts.length === 0, conflictIds: conflicts });
+          }
+          return res;
+        }, [hours.start, hours.end, slotMinutes, durationMinutes, dayBookings]);
+
+        function changeMonth(delta) {
+          const next = new Date(view);
+          next.setMonth(view.getMonth() + delta);
+          setView(next);
+        }
+        function isSameMonth(d, ref) {
+          return d.getFullYear() === ref.getFullYear() && d.getMonth() === ref.getMonth();
+        }
+        function isToday(d) {
+          const now = new Date();
+          return fmtDateKey(d) === fmtDateKey(now);
+        }
+        async function onCreateBooking() {
+          if (!selectedSlot) return;
+          if (!name.trim()) { alert("Please enter your name"); return; }
+          setSaving(true);
+          try {
+            const newBooking = {
+              id: (crypto && crypto.randomUUID) ? crypto.randomUUID() : Math.random().toString(36).slice(2),
+              date: selectedDate,
+              start: selectedSlot.start,
+              end: selectedSlot.end,
+              name,
+              note,
+            };
+            await new Promise(r => setTimeout(r, 600));
+            setBookings(prev => [...prev, newBooking]);
+            setSelectedSlot(null);
+            setName("");
+            setNote("");
+          } finally { setSaving(false); }
+        }
+        function cancelSelection() { setSelectedSlot(null); }
+
+        return (
+          <div className="p-6">
+            <div className="mx-auto max-w-6xl">
+              <header className="mb-6 flex items-center justify-between">
+                <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Book a Slot</h1>
+                <div className="inline-flex items-center gap-2">
+                  <div className="hidden md:flex items-center gap-2 rounded-xl border bg-white p-1 shadow-sm">
+                    <button onClick={() => changeMonth(-1)} className="p-2 rounded-lg hover:bg-slate-50" aria-label="Previous month">
+                      <IconChevronLeft />
+                    </button>
+                    <div className="px-3 py-1 text-sm font-medium">
+                      {view.toLocaleString(undefined, { month: "long", year: "numeric" })}
+                    </div>
+                    <button onClick={() => changeMonth(1)} className="p-2 rounded-lg hover:bg-slate-50" aria-label="Next month">
+                      <IconChevronRight />
+                    </button>
+                  </div>
+                </div>
+              </header>
+
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                {/* Calendar */}
+                <section className="lg:col-span-2">
+                  <div className="rounded-2xl border bg-white shadow-sm p-4">
+                    <div className="flex items-center justify-between md:hidden mb-2">
+                      <button onClick={() => changeMonth(-1)} className="p-2 rounded-lg hover:bg-slate-50" aria-label="Previous month">
+                        <IconChevronLeft />
+                      </button>
+                      <div className="px-3 py-1 text-sm font-medium">
+                        {view.toLocaleString(undefined, { month: "long", year: "numeric" })}
+                      </div>
+                      <button onClick={() => changeMonth(1)} className="p-2 rounded-lg hover:bg-slate-50" aria-label="Next month">
+                        <IconChevronRight />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-7 text-center text-xs font-medium text-slate-500">
+                      {["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => (
+                        <div key={d} className="p-2">{d}</div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-7 gap-1">
+                      {getMonthMatrix(view).flat().map((d, i) => {
+                        const key = fmtDateKey(d);
+                        const inMonth = isSameMonth(d, view);
+                        const isSel = key === selectedDate;
+                        const today = isToday(d);
+                        const hasBookings = bookings.some(b => b.date === key);
+                        return (
+                          <button
+                            key={i}
+                            aria-label={`Select ${d.toDateString()}`}
+                            onClick={() => setSelectedDate(key)}
+                            className={[
+                              "aspect-square rounded-xl p-2 flex flex-col items-center justify-center border",
+                              "transition-all duration-150",
+                              inMonth ? "bg-white" : "bg-slate-50 text-slate-400",
+                              isSel ? "ring-2 ring-slate-900 border-slate-900" : "border-slate-200",
+                              today && !isSel ? "shadow-inner" : "",
+                              "hover:shadow-sm hover:bg-slate-50"
+                            ].join(" ")}
+                          >
+                            <span className="text-sm font-semibold">{d.getDate()}</span>
+                            <div className="mt-1 h-1.5 w-1.5 rounded-full" style={{ backgroundColor: hasBookings ? "#10b981" : "transparent" }} aria-hidden />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="mt-3 flex items-center gap-3 text-xs text-slate-500">
+                    <div className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-500"/> booked</div>
+                    <div className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-slate-900"/> selected day</div>
+                  </div>
+
+                  <div className="mt-4 rounded-2xl border bg-white shadow-sm p-4">
+                    <h3 className="font-medium mb-3">Existing bookings</h3>
+                    {dayBookings.length === 0 ? (
+                      <p className="text-sm text-slate-500">No bookings yet for this day.</p>
+                    ) : (
+                      <ul className="space-y-2">
+                        {[...dayBookings]
+                          .sort((a, b) => a.start.localeCompare(b.start))
+                          .map(b => (
+                          <li key={b.id} className="flex items-center justify-between rounded-xl border p-2">
+                            <div className="flex items-center gap-2">
+                              <IconClock />
+                              <span className="text-sm font-medium">{b.start}–{b.end}</span>
+                            </div>
+                            <span className="text-xs text-slate-500">{b.name ?? "(no name)"}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </section>
+
+                {/* Slots & Form */}
+                <section className="lg:col-span-3">
+                  <div className="rounded-2xl border bg-white shadow-sm p-4">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                      <h2 className="text-lg font-semibold">Available slots</h2>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <label className="text-sm text-slate-600">Slot</label>
+                        <select className="rounded-xl border px-3 py-1.5 text-sm" value={slotMinutes} onChange={e => setSlotMinutes(Number(e.target.value))}>
+                          {[15, 20, 30, 45, 60].map(x => <option key={x} value={x}>{x} min</option>)}
+                        </select>
+                        <label className="text-sm text-slate-600 ml-2">Duration</label>
+                        <select className="rounded-xl border px-3 py-1.5 text-sm" value={durationMinutes} onChange={e => setDurationMinutes(Number(e.target.value))}>
+                          {[15, 20, 30, 45, 60, 90, 120].map(x => <option key={x} value={x}>{x} min</option>)}
+                        </select>
+                        <label className="text-sm text-slate-600 ml-2">Hours</label>
+                        <input type="time" value={hours.start} onChange={(e) => setHours(h => ({ ...h, start: e.target.value }))} className="rounded-xl border px-3 py-1.5 text-sm" />
+                        <span className="text-sm">–</span>
+                        <input type="time" value={hours.end} onChange={(e) => setHours(h => ({ ...h, end: e.target.value }))} className="rounded-xl border px-3 py-1.5 text-sm" />
+                      </div>
+                    </div>
+
+                    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+                      {slots.map((s, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => s.available && setSelectedSlot(s)}
+                          disabled={!s.available}
+                          className={[
+                            "group rounded-xl border p-3 text-left",
+                            s.available ? "hover:shadow-sm hover:bg-slate-50" : "opacity-40 cursor-not-allowed bg-slate-50",
+                            selectedSlot && selectedSlot.start === s.start && selectedSlot.end === s.end ? "ring-2 ring-slate-900" : ""
+                          ].join(" ")}
+                          aria-label={`Slot ${s.start} to ${s.end} ${s.available ? "available" : "unavailable"}`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="font-medium">{s.start} – {s.end}</div>
+                            {s.available ? (
+                              <span className="opacity-0 group-hover:opacity-100 transition-opacity inline-flex"><IconCheck /></span>
+                            ) : (
+                              <IconX />
+                            )}
+                          </div>
+                          {!s.available && (
+                            <p className="mt-1 text-xs text-slate-500">Conflicts: {s.conflictIds.length}</p>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 rounded-2xl border bg-white shadow-sm p-4">
+                    <h3 className="font-semibold">Book selected slot</h3>
+                    {!selectedSlot ? (
+                      <p className="mt-2 text-sm text-slate-500">Pick an available slot above to continue.</p>
+                    ) : (
+                      <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="rounded-xl border p-3 bg-slate-50">
+                          <div className="text-sm text-slate-600">Selected</div>
+                          <div className="mt-1 font-medium">{selectedDate}</div>
+                          <div className="text-sm">{selectedSlot.start} – {selectedSlot.end}</div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium" htmlFor="name">Your name</label>
+                          <input id="name" value={name} onChange={e => setName(e.target.value)} placeholder="Ada Lovelace" className="w-full rounded-xl border px-3 py-2 text-sm" />
+                          <label className="text-sm font-medium" htmlFor="note">Note (optional)</label>
+                          <textarea id="note" value={note} onChange={e => setNote(e.target.value)} rows={3} placeholder="Anything we should know?" className="w-full rounded-xl border px-3 py-2 text-sm" />
+                          <div className="flex items-center gap-2">
+                            <button onClick={onCreateBooking} disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-medium shadow-sm hover:shadow disabled:opacity-50">
+                              {saving ? <span className="animate-spin">⏳</span> : <IconCheck />} Confirm booking
+                            </button>
+                            <button onClick={cancelSelection} className="rounded-xl border px-4 py-2 text-sm hover:bg-slate-50">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mt-4 text-xs text-slate-500">
+                    <p><strong>Integrate your backend:</strong> Replace the simulated API call in <code>onCreateBooking()</code> with a POST to your server. Server should reject overlapping bookings and return the created record. Seed <code>bookings</code> from your API.</p>
+                    <p className="mt-1"><strong>Time zones:</strong> This demo uses local time strings (HH:mm). For production, store and compare in minutes since midnight + date key, or use UTC timestamps with proper TZ handling.</p>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<BookingCalendarPage />);
+    </script>
+  </body>
+</html>

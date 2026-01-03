@@ -1,10 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,57 +16,133 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { LLM_API_KEY_ID } from "@/lib/constants";
+import { getDisplayableKey } from "@/lib/helpers";
+import type { PropsLlmApiKey } from "./local-storage-llm-api-key";
 
 const FormSchema = z.object({
-  bio: z
+  [LLM_API_KEY_ID]: z
     .string()
     .min(10, {
-      message: "Bio must be at least 10 characters.",
+      message: "The API key must be at least 10 characters.",
     })
-    .max(160, {
-      message: "Bio must not be longer than 30 characters.",
+    .max(256, {
+      message: "The API key must not be longer than 256 characters.",
     }),
 });
 
-export default function Login() {
+const DESCRIPTION = (
+  <>
+    You can create an Open AI API key{" "}
+    <a
+      href="https://platform.openai.com/api-keys"
+      className="font-medium text-cyan-600"
+    >
+      here
+    </a>
+    .
+  </>
+);
+
+export type PropsLogin = PropsLlmApiKey & {
+  goToVibecoder?: () => void;
+};
+
+export default function Login({
+  llmApiKey,
+  setLlmApiKey,
+  goToVibecoder,
+}: PropsLogin) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    reValidateMode: "onBlur",
+    values: { [LLM_API_KEY_ID]: getDisplayableKey(llmApiKey) },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast("You submitted the following values", {
+  const elementRef = useRef<HTMLTextAreaElement>(null);
+  const llmApiKeyRef = useRef(llmApiKey);
+
+  const hasLlmApiKey = !!llmApiKey;
+
+  const handleChange =
+    (fieldOnChange: (value: string) => void) =>
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      llmApiKeyRef.current = event.target.value;
+
+      fieldOnChange(getDisplayableKey(event.target.value));
+      form.trigger();
+      elementRef.current?.blur();
+    };
+
+  const reload = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+
+    llmApiKeyRef.current = llmApiKey;
+
+    form.setValue(LLM_API_KEY_ID, getDisplayableKey(llmApiKey), {
+      shouldValidate: true,
+    });
+  };
+
+  const saveAndVibecode = () => {
+    setLlmApiKey?.(llmApiKeyRef.current);
+
+    toast("You saved the following LLM API key", {
       description: (
         <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">
+            {getDisplayableKey(llmApiKeyRef.current, true)}
+          </code>
         </pre>
       ),
     });
-  }
+
+    goToVibecoder?.();
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form
+        onSubmit={form.handleSubmit(saveAndVibecode)}
+        className="w-2xs space-y-6 sm:w-sm"
+      >
         <FormField
           control={form.control}
-          name="bio"
+          name={LLM_API_KEY_ID}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel>LLM API key</FormLabel>
+
               <FormControl>
                 <Textarea
-                  placeholder="Tell us a little bit about yourself"
+                  placeholder="sk-XXX"
                   className="resize-none"
                   {...field}
+                  onChange={handleChange(field.onChange)}
+                  onFocus={() => field.onChange("")}
+                  ref={elementRef}
+                  value={field.value}
                 />
               </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations.
-              </FormDescription>
+
+              <FormDescription>{DESCRIPTION}</FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+
+        <div className="flex gap-2">
+          {hasLlmApiKey && (
+            <Button className="select-none" onClick={reload}>
+              Reload
+            </Button>
+          )}
+
+          <Button className="select-none" type="submit">
+            Save and vibe code
+          </Button>
+        </div>
       </form>
     </Form>
   );

@@ -34,3 +34,9 @@ export const getJsx = (message: UIMessage<unknown, UIDataTypes, UITools>) => {
 
   return result?.[1];
 };
+
+export const getProperText = (text: string) => {
+  const result = text.match(REGEX.JSX_TEXT) || text.match(REGEX.JSX_CODE);
+
+  return result ? `\`\`\`jsx\n${result[1]}\n\`\`\`` : text;
+};

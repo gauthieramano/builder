@@ -6,8 +6,8 @@ import { PanelRight, Redo2, Undo2 } from "lucide-react";
 import { useState } from "react";
 import { type ExternalToast, toast } from "sonner";
 import { Response } from "@/components/ai-elements/response";
-import { REGEX } from "@/lib/constants";
-import { getJsx, getProperText } from "@/lib/helpers";
+import { REGEX } from "@/utils/constants";
+import { getJsx, getProperText } from "@/utils/helpers";
 import {
   Conversation,
   ConversationContent,

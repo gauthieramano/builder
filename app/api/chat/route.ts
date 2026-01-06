@@ -1,6 +1,6 @@
-import type { UIMessage } from "ai";
+import { createAgentUIStreamResponse, type UIMessage } from "ai";
 import { type NextRequest, NextResponse } from "next/server";
-import { streamTextResult } from "@/utils/jsx-agent";
+import { jsxAgent } from "@/utils/jsx-agent";
 
 // Allow streaming responses up to 2 minutes
 export const maxDuration = 120;
@@ -13,9 +13,10 @@ type JsonRequest = {
 export async function POST(req: Request) {
   const { llmApiKey, messages }: JsonRequest = await req.json();
 
-  const result = await streamTextResult(messages, llmApiKey);
-
-  return result.toUIMessageStreamResponse();
+  return createAgentUIStreamResponse({
+    agent: jsxAgent(llmApiKey),
+    uiMessages: messages,
+  });
 }
 
 export function GET(request: NextRequest) {

@@ -1,13 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { createOpenAI } from "@ai-sdk/openai";
-import {
-  convertToModelMessages,
-  type SystemModelMessage,
-  stepCountIs,
-  streamText,
-  type UIMessage,
-} from "ai";
+import { type SystemModelMessage, stepCountIs, ToolLoopAgent } from "ai";
 import { MODEL } from "./constants";
 
 const MARKDOWN = path.join(process.cwd(), "utils/jsx-prompt.md");
@@ -19,15 +13,11 @@ const SYSTEM_PROMPT = {
 
 const MAX_STEPS = 5;
 
-export const streamTextResult = async (
-  messages: UIMessage[],
-  apiKey: string,
-) => {
+export const jsxAgent = (apiKey: string) => {
   const openai = createOpenAI({ apiKey });
 
-  return streamText({
-    messages: await convertToModelMessages(messages),
-    system: SYSTEM_PROMPT,
+  return new ToolLoopAgent({
+    instructions: SYSTEM_PROMPT,
     stopWhen: stepCountIs(MAX_STEPS),
     model: openai(MODEL),
   });

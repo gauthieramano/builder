@@ -103,7 +103,7 @@ export async function POST(req: Request) {
         role: "system",
         content: INSTRUCTIONS,
       },
-      ...convertToModelMessages(messages),
+      ...(await convertToModelMessages(messages)),
     ],
   });
 

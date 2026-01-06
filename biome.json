@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -24,6 +24,11 @@
     "indentStyle": "space",
     "indentWidth": 2
   },
+  "css": {
+    "formatter": { "enabled": true },
+    "parser": { "tailwindDirectives": true }
+  },
+  "html": { "formatter": { "enabled": true } },
   "linter": {
     "enabled": true,
     "rules": {
@@ -35,6 +40,41 @@
           "options": {
             "attributes": []
           }
+        }
+      },
+      "style": {
+        "noExportedImports": "error",
+        "noInferrableTypes": "error",
+        "noMagicNumbers": "error",
+        "noNegationElse": "error",
+        "noParameterAssign": {
+          "level": "error",
+          "options": { "propertyAssignment": "deny" }
+        },
+        "noSubstr": "error",
+        "noUnusedTemplateLiteral": "warn",
+        "noUselessElse": "warn",
+        "noYodaExpression": "warn",
+        "useArrayLiterals": "warn",
+        "useBlockStatements": { "level": "warn", "fix": "safe", "options": {} },
+        "useCollapsedElseIf": "warn",
+        "useCollapsedIf": "warn",
+        "useConsistentCurlyBraces": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {}
+        },
+        "useConsistentObjectDefinitions": "warn",
+        "useNamingConvention": {
+          "level": "warn",
+          "fix": "none",
+          "options": {}
+        },
+        "useShorthandAssign": { "level": "warn", "fix": "safe", "options": {} },
+        "useSingleVarDeclarator": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {}
         }
       },
       "suspicious": {

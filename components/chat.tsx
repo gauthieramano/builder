@@ -17,6 +17,7 @@ import { Loader } from "./ai-elements/loader";
 import { Message, MessageContent } from "./ai-elements/message";
 import {
   PromptInput,
+  type PromptInputMessage,
   PromptInputSubmit,
   PromptInputTextarea,
 } from "./ai-elements/prompt-input";
@@ -38,10 +39,11 @@ export default function Chat({ llmApiKey, setCode }: Props) {
   const { messages, sendMessage, setMessages, status } = useChat({
     transport: new DefaultChatTransport({ body: { llmApiKey } }),
 
+    // biome-ignore lint/style/useNamingConvention: This object property name should be in camelCase
     experimental_throttle: 1000,
 
     onError: (error) => {
-      const result = error.message.match(REGEX.SEPARATION);
+      const result = error.message.match(REGEX.separation);
       const args: ArgsToast = result
         ? [result[1], { description: result[2] }]
         : [error.message];
@@ -75,12 +77,10 @@ export default function Chat({ llmApiKey, setCode }: Props) {
     setCode,
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (input.trim()) {
+  const handleSubmit = ({ text }: PromptInputMessage) => {
+    if (text.trim()) {
       cleanRefs();
-      sendMessage({ text: input });
+      sendMessage({ text });
       setInput("");
     }
   };
@@ -130,11 +130,11 @@ export default function Chat({ llmApiKey, setCode }: Props) {
           <PromptInputTextarea
             value={input}
             placeholder="Say what you want to build..."
-            onChange={(event) => setInput(event.currentTarget.value)}
+            onChange={(event) => setInput(event.target.value)}
             className="pr-12"
           />
           <PromptInputSubmit
-            status={status === "streaming" ? "streaming" : "ready"}
+            status={status}
             disabled={!input.trim()}
             className="absolute right-1 bottom-1"
           />

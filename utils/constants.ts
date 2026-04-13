@@ -1,5 +1,7 @@
 import type { ChatStatus } from "ai";
 
+export const MODEL = "gpt-5-nano-2025-08-07";
+
 export const REGEX = {
   jsxCode: /```jsx\n((.|\n)+)```/,
   jsxText: /^(import (.|\n)*)$/,

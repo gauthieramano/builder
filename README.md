@@ -107,7 +107,7 @@ It uses:
 - [TypeScript](https://www.typescriptlang.org) _(v5)_
 - [React](https://react.dev) _(v19)_
 - [Next.js](https://nextjs.org) _(v16)_
-- [Vercel AI SDK](https://ai-sdk.dev) _(v5)_ with [@ai-sdk/openai](https://www.npmjs.com/package/@ai-sdk/openai)
+- [Vercel AI SDK](https://ai-sdk.dev) _(v6)_ with [@ai-sdk/openai](https://www.npmjs.com/package/@ai-sdk/openai)
 - [Tailwind CSS](https://tailwindcss.com) _(v4)_
 - [shadcn/ui](https://ui.shadcn.com)
 - [AI Elements](https://ai-sdk.dev/elements)

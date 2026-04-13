@@ -1,6 +1,6 @@
 import type { ChatStatus, UIDataTypes, UIMessage, UITools } from "ai";
 import { useRef } from "react";
-import { LOADING_STATUSES } from "@/lib/constants";
+import { LOADING_STATUSES } from "@/utils/constants";
 
 type MessageChat = UIMessage<unknown, UIDataTypes, UITools>;
 

@@ -16,8 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { LLM_API_KEY_ID } from "@/lib/constants";
-import { getDisplayableKey } from "@/lib/helpers";
+import { LLM_API_KEY_ID } from "@/utils/constants";
+import { getDisplayableKey } from "@/utils/helpers";
 import type { PropsLlmApiKey } from "./local-storage-llm-api-key";
 
 const MIN_LENGTH = 10;
